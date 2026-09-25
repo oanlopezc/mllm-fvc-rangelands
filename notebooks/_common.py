@@ -436,13 +436,20 @@ CAMPAIGN_1 = "campaign_1"
 CAMPAIGN_2 = "campaign_2"
 CAMPAIGN_3 = "campaign_3"
 
-# The campaign names as they appear in the raw reference frame, mapped to the names the
-# published dataset uses. `load_d1` applies this, so it is the only place the two
-# vocabularies meet.
+# Campaign names, mapped to the names the published dataset uses. `load_d1` applies
+# this, so it is the only place a campaign label is interpreted.
+#
+# The mapping is by acquisition date, and it is idempotent: input already carrying the
+# published names passes through unchanged. That matters because the reference frame can
+# reach this code two ways, either as the field spreadsheet or as the deposited
+# `image_metadata.csv`, and both must land on one vocabulary.
 CAMPAIGN_LABELS = {
     "KSRNR_Nov_2024": CAMPAIGN_1,
     "AlUla_Jan_2025": CAMPAIGN_2,
     "AlUla_April_2025": CAMPAIGN_3,
+    CAMPAIGN_1: CAMPAIGN_1,
+    CAMPAIGN_2: CAMPAIGN_2,
+    CAMPAIGN_3: CAMPAIGN_3,
 }
 
 

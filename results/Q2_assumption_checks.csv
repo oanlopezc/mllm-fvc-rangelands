@@ -1,0 +1,20 @@
+id,description,passed,detail,question_id,contrast,combination
+A1,"D1 has 1,155 rows, Filename unique",True,"n=1155, unique=True",Q2,,n/a
+A2,"D1<->D2/D3/D4 1:1 join, 0 unmatched",True,"1155/1155 all three, 0 unmatched",Q2,,n/a
+A3,"each local file has 13,860 rows, 1,155 images, 12 rows/image",True,"Gemma-3-12B: n=13860, images=1155, per_image_ok=True; Gemma-3-27B: n=13860, images=1155, per_image_ok=True; Llama-4-Maverick: n=13860, images=1155, per_image_ok=True; Llama-4-Scout: n=13860, images=1155, per_image_ok=True; Mistral-Small-3.2: n=13860, images=1155, per_image_ok=True; Qwen-2.5: n=13860, images=1155, per_image_ok=True",Q2,,n/a
+A4,model derived from filename yields exactly the 6 recorded levels,True,"levels=['Gemma-3-12B', 'Gemma-3-27B', 'Llama-4-Maverick', 'Llama-4-Scout', 'Mistral-Small-3.2', 'Qwen-2.5']",Q2,,n/a
+A5,"D2.reference == D1.'Veg %' on all 1,155 rows",True,1155/1155 match,Q2,,n/a
+A6,reference bin counts are 933/108/46/38/30,True,"observed={'0-20': 933, '20-40': 108, '40-60': 46, '60-80': 38, '80-100': 30}",Q2,,n/a
+A7,"count of images with D1.v7 == 0 (computed, not asserted)",True,n_zero_reference=231,Q2,,n/a
+A8,"D2.v3 and D2.v4 each have exactly 3 levels (counts computed, not assumed)",True,"v3_counts={0: 766, 1: 94, 2: 295}, v4_counts={0: 699, 1: 220, 2: 236}",Q2,,n/a
+A9,"device x campaign crosstab: 3 named non-zero cells (154/581/420), 3 named structural zeros",True,"shape=(2, 3), nonzero_cells_observed={('samsung Galaxy S25 Ultra', 'campaign_3'): 154, ('samsung SM-S908E', 'campaign_2'): 581, ('samsung SM-S908E', 'campaign_1'): 420}, zero_cells_observed={('samsung Galaxy S25 Ultra', 'campaign_2'): 0, ('samsung Galaxy S25 Ultra', 'campaign_1'): 0, ('samsung SM-S908E', 'campaign_3'): 0}",Q2,,n/a
+A10,in_scope & stack=='local' yields exactly 5 Scout JSON_PARSE_FAILURE on Grid-Overlay (4 base + 1 masked_gray),True,"n_total=5, by_variant={'base': 4, 'masked_gray': 1}",Q2,,n/a
+A11,"D8 has 6 models x 2 runs x 100 images, prompt constant Short",True,"n=1200, models=6, runs=['run1', 'run2'], prompt_levels=['Short']",Q2,,n/a
+A12,"no notebook reads D7, D10, model_performance_summary.csv, or a path outside the project",True,"forbidden_paths_declared=('call_telemetry.csv', 'api_retry_summary.csv', 'model_performance_summary.csv'); loaders in this module touch RAW only",Q2,,n/a
+A13,"per-model unusable D5.v5 confidence count, computed on base/local frame only",True,"per_model_unusable={'Gemma-3-12B': 59, 'Gemma-3-27B': 0, 'Llama-4-Maverick': 1, 'Llama-4-Scout': 44, 'Mistral-Small-3.2': 5, 'Qwen-2.5': 0}",Q2,,n/a
+A14,B_median and B_mean computed from D1.v7 over the full frame (oracle baselines),True,"B_median=3.0, B_mean=12.478831168831169",Q2,,n/a
+K1,pairing complete: every image has exactly 24 base/local rows,True,"n_images=1155, n_images_with_wrong_count=0, expected_per_image=24",Q2,,n/a
+fold_stratification,every training fold realises n >= 10 images in every one of the five bins,True,minimum realised training-fold per-bin n = 24 across 250 scored folds,Q2,,n/a
+no_failed_repeats,every repeat/fold/arm supplied at least 3 candidates in every selection tier,True,0 failed fold/arm selection(s),Q2,,n/a
+headline_within_repeat_range,"the headline balanced MAE and overall MAE fall inside their own repeat-to-repeat min-to-max range, for every row",True,checked on all 108 rows (24 singles + 42 ensembles x 2 arms) on both metrics,Q2,,n/a
+single_configurations_unaffected,"the 24 single configurations, which involve no selection, are unchanged by running two selection arms: zero repeat spread and the published headline value",True,"checked directly on Llama-4-Maverick x Short (see the assertion above); the same fold-loop code path that reads single-configuration predictions runs once per fold regardless of arm, so no other single configuration can differ either",Q2,,n/a

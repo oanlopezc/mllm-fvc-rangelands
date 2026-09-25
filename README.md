@@ -88,9 +88,21 @@ pixi run render notebooks/Q1_accuracy.py
 ## Input data
 
 The notebooks read the deposited tables, not the photographs, except for `Q0`,
-which computes the vegetation-index baseline from the rectified images. Download
-the dataset from the DOI above and place it where the notebooks expect it; the
-paths each notebook resolves are listed at the top of `notebooks/_common.py`.
+which computes the vegetation-index baseline from the rectified images.
+
+The deposit stores one row per photograph and concatenates the model responses
+into two files. The notebooks read the shape the analysis was written against,
+so one script converts between them:
+
+```bash
+python scripts/from_zenodo.py --dataset path/to/unzipped/dataset --out data/raw
+```
+
+It checks the row counts and the cover bin composition before writing anything,
+and it sets the row order deliberately, because a bootstrap draws from the
+distinct images in the order the frame holds them. Run `Q0_baseline_index.py`
+first: it writes the classical baseline the Q9 notebooks read, which is derived
+from the rectified photographs rather than measured, and so is not deposited.
 
 Every table in the deposit keys on a column named `image`, holding the
 photograph filename, so the reference cover, the annotations and the model

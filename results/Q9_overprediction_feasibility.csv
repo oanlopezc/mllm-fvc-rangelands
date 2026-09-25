@@ -1,0 +1,6 @@
+question_id,bin,n,n_overpredicted,min_reference_in_bin,baseline_max_prediction,overprediction_arithmetically_possible,n_images_overprediction_feasible
+Q9,0-20,933,384,0.0,63.64479871090448,True,933
+Q9,20-40,108,0,21.0,63.64479871090448,True,108
+Q9,40-60,46,0,41.0,63.64479871090448,True,46
+Q9,60-80,38,0,64.0,63.64479871090448,False,0
+Q9,80-100,30,0,82.0,63.64479871090448,False,0

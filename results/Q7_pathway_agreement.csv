@@ -1,0 +1,31 @@
+question_id,level,model,prompt,n_pairs,exact_agreement_rate,median_abs_diff_local_minus_api,abs_diff_iqr_lo,abs_diff_iqr_hi,empirical_loa_2_5pct,empirical_loa_97_5pct,spearman_tie_corrected,spearman_p,tier,corrected,claim_wording
+Q7,model,Gemma-3-12B,all (pooled),4620,0.6274891774891775,0.0,0.0,5.0,-10.0,20.0,0.9105038334225873,0.0,secondary,False,stack and possibly weights
+Q7,model,Gemma-3-27B,all (pooled),4620,0.6798701298701298,0.0,0.0,5.0,-10.0,10.0,0.8955563780196228,0.0,secondary,False,stack and possibly weights
+Q7,model,Llama-4-Maverick,all (pooled),4620,0.46190476190476193,2.0,0.0,10.0,-25.0,25.0,0.7270814963728398,0.0,secondary,False,stack and possibly weights
+Q7,model,Llama-4-Scout,all (pooled),4620,0.3313852813852814,5.0,0.0,10.0,-30.0,20.0,0.7189589033415269,0.0,secondary,False,stack and possibly weights
+Q7,model,Mistral-Small-3.2,all (pooled),4620,0.30692640692640694,4.25,0.0,10.0,-3.0,20.0,0.7920134636037109,0.0,secondary,False,stack and possibly weights
+Q7,model,Qwen-2.5,all (pooled),4620,0.5701298701298702,0.0,0.0,5.0,-10.0,10.0,0.9340545527170477,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Gemma-3-12B,Detailed,1155,0.6199134199134199,0.0,0.0,7.0,-10.0,20.0,0.8644985864858888,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Gemma-3-12B,Grid-Overlay,1155,0.6077922077922078,0.0,0.0,10.0,-10.0,14.0,0.9007008320469428,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Gemma-3-12B,Point-Hint,1155,0.6138528138528139,0.0,0.0,3.25,-10.0,20.0,0.929012990735578,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Gemma-3-12B,Short,1155,0.6683982683982684,0.0,0.0,4.0,-10.0,20.0,0.936953503475077,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Gemma-3-27B,Detailed,1155,0.6978354978354978,0.0,0.0,10.0,-10.0,10.0,0.8264296326314629,6.688396704618582e-290,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Gemma-3-27B,Grid-Overlay,1155,0.69004329004329,0.0,0.0,10.0,-10.0,10.0,0.8992136873156524,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Gemma-3-27B,Point-Hint,1155,0.6406926406926406,0.0,0.0,5.0,-10.0,10.0,0.9117334690809648,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Gemma-3-27B,Short,1155,0.6909090909090909,0.0,0.0,5.0,-10.0,10.0,0.9213381188945337,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Llama-4-Maverick,Detailed,1155,0.3930735930735931,4.0,0.0,10.0,-40.0,10.0,0.5862448225518105,1.472859902580707e-107,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Llama-4-Maverick,Grid-Overlay,1155,0.37922077922077924,2.0,0.0,7.0,-20.0,25.299999999999727,0.8004257718000393,1.5901375658996675e-258,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Llama-4-Maverick,Point-Hint,1155,0.5194805194805194,0.0,0.0,10.0,-20.0,25.0,0.8267843597403495,2.2990576677586652e-290,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Llama-4-Maverick,Short,1155,0.5558441558441558,0.0,0.0,10.0,-20.0,30.0,0.7986273938370884,1.5783485470248425e-256,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Llama-4-Scout,Detailed,1155,0.270995670995671,5.0,0.0,17.0,-44.15,15.0,0.4273987628487893,1.720468736406267e-52,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Llama-4-Scout,Grid-Overlay,1155,0.15497835497835497,5.0,2.0,10.0,-28.0,20.0,0.7790947368117097,4.504639215427175e-236,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Llama-4-Scout,Point-Hint,1155,0.35324675324675325,4.0,0.0,10.0,-25.0,25.0,0.8728865868363502,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Llama-4-Scout,Short,1155,0.5463203463203463,0.0,0.0,10.0,-20.0,20.749999999999318,0.8302841513657493,5.3508792674063266e-295,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Mistral-Small-3.2,Detailed,1155,0.10995670995670996,5.0,4.0,13.0,0.0,25.0,0.7162497541111975,2.3383419903223266e-182,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Mistral-Small-3.2,Grid-Overlay,1155,0.3168831168831169,3.0,0.0,5.0,-5.0,15.0,0.8663979544375788,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Mistral-Small-3.2,Point-Hint,1155,0.4147186147186147,1.5,0.0,5.0,-5.0,20.0,0.8362055368467102,4.3911713403943156e-303,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Mistral-Small-3.2,Short,1155,0.38614718614718613,3.0,0.0,5.0,0.0,20.0,0.8597469509345007,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Qwen-2.5,Detailed,1155,0.5852813852813853,0.0,0.0,5.0,-5.0,15.0,0.9287276018861875,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Qwen-2.5,Grid-Overlay,1155,0.5748917748917749,0.0,0.0,5.0,-10.0,10.0,0.9397306447168645,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Qwen-2.5,Point-Hint,1155,0.6181818181818182,0.0,0.0,5.0,-10.0,5.0,0.9579744341748103,0.0,secondary,False,stack and possibly weights
+Q7,model_x_prompt,Qwen-2.5,Short,1155,0.5021645021645021,0.0,0.0,5.0,-5.0,15.0,0.9241526567126678,0.0,secondary,False,stack and possibly weights

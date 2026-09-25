@@ -1,0 +1,23 @@
+question_id,check,statistic,p_value,detail
+Q4,K1_pairing_complete,,,"n_images=1155, n_images_with_wrong_count=0, expected_per_image=24"
+Q4,C11_maverick_n_reproduced,,,"observed={'Gemma-3-12B': 100, 'Gemma-3-27B': 100, 'Llama-4-Maverick': 92, 'Llama-4-Scout': 100, 'Mistral-Small-3.2': 100, 'Qwen-2.5': 100}, expected={'Gemma-3-12B': 100, 'Gemma-3-27B': 100, 'Llama-4-Maverick': 92, 'Llama-4-Scout': 100, 'Mistral-Small-3.2': 100, 'Qwen-2.5': 100}"
+Q4,K2_symmetry__masked_gray_minus_base,-1.1753143168013878,,"skew=-1.1753, symmetry_violated=True (reported for context; the Hodges-Lehmann estimate is reported for every contrast regardless)"
+Q4,K3_tie_burden__masked_gray_minus_base,0.004329004329004329,,"zero_share=0.0043, tie_burden_exceeded=False (reported for context)"
+Q4,K4_bootstrap_bin_coverage__masked_gray_minus_base,0.0,,"violation_share=0.0000, switch_to_stratified=False"
+Q4,K5_normality__masked_gray_minus_base,357.81092688916294,2.006062426516545e-78,"D'Agostino-Pearson on the paired variant difference d_i; context only, no method in this notebook assumes normality"
+Q4,K2_symmetry__rectified_minus_base,-1.0746038239165878,,"skew=-1.0746, symmetry_violated=True (reported for context; the Hodges-Lehmann estimate is reported for every contrast regardless)"
+Q4,K3_tie_burden__rectified_minus_base,0.006926406926406926,,"zero_share=0.0069, tie_burden_exceeded=False (reported for context)"
+Q4,K4_bootstrap_bin_coverage__rectified_minus_base,0.0,,"violation_share=0.0000, switch_to_stratified=False"
+Q4,K5_normality__rectified_minus_base,343.9702390125896,2.0314756867735782e-75,"D'Agostino-Pearson on the paired variant difference d_i; context only, no method in this notebook assumes normality"
+Q4,K2_symmetry__masked_gray_minus_rectified,0.2137659626394447,,"skew=0.2138, symmetry_violated=False (reported for context; the Hodges-Lehmann estimate is reported for every contrast regardless)"
+Q4,K3_tie_burden__masked_gray_minus_rectified,0.01471861471861472,,"zero_share=0.0147, tie_burden_exceeded=False (reported for context)"
+Q4,K4_bootstrap_bin_coverage__masked_gray_minus_rectified,0.0,,"violation_share=0.0000, switch_to_stratified=False"
+Q4,K5_normality__masked_gray_minus_rectified,135.8561614639763,3.1565260065348806e-30,"D'Agostino-Pearson on the paired variant difference d_i; context only, no method in this notebook assumes normality"
+Q4,K6_homoscedasticity_abs_e__base,,,"per-bin sd of |e|: {'0-20': 5.486720869697958, '20-40': 4.591711805189724, '40-60': 4.443191342819972, '60-80': 9.454005076726672, '80-100': 10.180548041688068}"
+Q4,K6_homoscedasticity_abs_e__masked_gray,,,"per-bin sd of |e|: {'0-20': 6.058146904605889, '20-40': 4.941515541617197, '40-60': 5.601201987913565, '60-80': 8.339710990065475, '80-100': 7.9146500002487015}"
+Q4,K6_homoscedasticity_abs_e__rectified,,,"per-bin sd of |e|: {'0-20': 6.097274729349258, '20-40': 4.7701570515555165, '40-60': 5.935470818044446, '60-80': 8.37442938437326, '80-100': 9.186673134614498}"
+Q4,obliquity_unit_of_analysis,1155.0,,"n_rows == n_unique_images == 1155 asserted before pairing d_i against obliquity (guards against the 24x fan-out that would inflate n to 27,720)"
+Q4,tie_burden__d_i_obliquity,0.01471861471861472,,"zero_share=0.0147 of images have d_i==0 (n_zero=17); reported alongside the obliquity quartile table, not replaced by a cut on obliquity"
+Q4,by_axis_full_image_coverage,0.0,,"30 by-axis rows checked; 0 rows do not cover all 1,155 images (expected 0 — every model and every prompt row is a different summary of the same full image set)"
+Q4,by_axis_additivity_crop_plus_correction_equals_total,0.0,,max |crop + correction - total| across the 10 axis levels = 0.00e+00; 0 levels exceed the 1e-6 floating-point tolerance (expected 0)
+Q4,by_axis_ci_method_recorded,0.0,,ci_method counts across the 30 by-axis rows: {'BCa': 30}; 0 rows fell back to the plain percentile interval

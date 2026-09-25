@@ -1742,8 +1742,8 @@ plt.show()
 # The observed maximum AUC is **Gemma-3-27B x Detailed at 0.798**, with
 # **Llama-4-Maverick x Grid-Overlay at 0.737** and **Qwen-2.5 x Short at
 # 0.720** close behind — confirmed directly from `auc_by_combo_df` above, not
-# assumed. Any statement of the form "configuration X is the single
-# highest-discriminating configuration" is withdrawn: the maximum of 24
+# assumed. No statement of the form "configuration X is the single
+# highest-discriminating configuration" is made here: the maximum of 24
 # correlated-by-construction statistics is upward-biased (the same
 # winner's-curse problem the balanced-MAE top-set handles), and three configurations sit
 # within 0.078 of each other against per-cell standard errors of roughly

@@ -1,0 +1,7 @@
+question_id,model,n_reproduced,n_total,delta_mav,delta_mav_ci_lo,delta_mav_ci_hi,median_nonzero_disagreement,max_nonzero_disagreement,scout_cot_rows_in_q1_frame
+Q1,Gemma-3-12B,100,100,,,,,,4
+Q1,Gemma-3-27B,100,100,,,,,,4
+Q1,Llama-4-Maverick,92,100,0.65,0.25,1.15,10.0,10.0,4
+Q1,Llama-4-Scout,100,100,,,,,,4
+Q1,Mistral-Small-3.2,100,100,,,,,,4
+Q1,Qwen-2.5,100,100,,,,,,4

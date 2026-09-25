@@ -81,7 +81,7 @@ assert all(p.endswith('{"vegetation_percent": <number>, "confidence": <number>}\
 # its base text defines cover as living and green tissue and would otherwise contradict the new
 # clause; nothing else in any base prompt changes.
 #
-# No estimate reported in the paper came from these prompts. Table 1 lists the four above and
+# No estimate reported in the paper comes from these prompts. Table 1 lists the four above and
 # nothing else.
 # ---------------------------------------------------------------------------
 
@@ -146,7 +146,7 @@ EXP2_BASE_TO_DORMANT = {
 }
 EXP2_PROMPT_IDS = list(EXP2_BASE_TO_DORMANT.values())
 
-# Verified character-for-character against Experiment-2-Prompt.md.
+# The same two details the four base prompts are held to.
 assert "–" in PROMPTS["v2_short_dormant"]
 assert "–" in PROMPTS["v3_detailed_ecology_dormant"]
 assert "–" not in PROMPTS["v1_point_hint_dormant"]
@@ -166,7 +166,7 @@ assert "green photosynthetic" not in PROMPTS["v3_detailed_ecology_dormant"]
 # names something a model can check against what it sees, since non-rooted material is by
 # definition detached from the ground. Nothing else in any prompt changes.
 #
-# As with the second set, no estimate reported in the paper came from these prompts.
+# As with the second set, no estimate reported in the paper comes from these prompts.
 # ---------------------------------------------------------------------------
 
 _DORMANT_CLAUSE_ROOTED = (
@@ -301,18 +301,17 @@ MODELS = {
         "gpu": 3,
         "batch_size": 4,
     },
-    # Llama-4-Scout and Llama-4-Maverick are configured here but did not produce any reported
-    # estimate through this path. Both were served with vLLM on H200s instead, and ../H200-vLLM/
-    # holds the code that generated their results. The entries remain because the two models are
-    # part of the grid these constants describe, and because the reasons they moved are properties
-    # of the models worth stating where the model table is.
+    # Llama-4-Scout and Llama-4-Maverick belong to the grid these constants describe, so their
+    # settings live here with the rest of the model table. Their reported estimates come from
+    # vLLM on H200s; ../H200-vLLM/ holds that code. What keeps them off this path is a property
+    # of each checkpoint, stated below where the setting it explains sits.
     #
     # Scout is 203 GB on disk (bf16, 50 shards) and so does not fit one 80 GB A100 as the other
     # four models do. "gpus" (a list) rather than "gpu" (a single int) tells resolve_gpus() below
     # to hand a worker all four cards, and device_map="auto" lets accelerate shard the model
     # across them, which needs a dedicated allocation rather than the shared-node,
     # one-worker-per-GPU arrangement the other four use. Under transformers it generates at
-    # roughly 37,900 ms per image against roughly 24 ms under vLLM, which is what moved it.
+    # roughly 37,900 ms per image, against roughly 24 ms under vLLM.
     "Llama-4-Scout-17B-16E-Instruct": {
         "path": os.path.join(PROJECT_ROOT, "models/meta-llama/Llama-4-Scout-17B-16E-Instruct"),
         "repo_id": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
@@ -343,8 +342,8 @@ MODELS = {
         # card: on H200s the same decompression fills GPU 0 to 143,087 of 143,771 MiB at 8% of the
         # way through. Six H200s give roughly 842 GB, a margin of about 39 GB over the requirement,
         # so the caps below leave roughly 15 GiB of headroom per card (125 GiB of about 140.4) and
-        # send the remaining 53 GB, about 6.6% of the model, to CPU. This is the arrangement that
-        # loads; it is not the one that produced Maverick's results, which came from vLLM.
+        # send the remaining 53 GB, about 6.6% of the model, to CPU. These settings let the model
+        # load; Maverick's reported estimates come from vLLM (see ../H200-vLLM/).
         "gpus": [0, 1, 2, 3, 4, 5],
         "device_map": "auto",
         "max_memory": {

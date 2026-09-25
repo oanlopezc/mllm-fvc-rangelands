@@ -1,0 +1,69 @@
+question_id,selection_metric,axis,level,n_folds,freq_in_top2,n_in_top2,freq_in_top3,n_in_top3,model,prompt,freq,n,n_model_rank_ties,n_prompt_rank_ties,n_own_prompt_rank_ties
+Q2,MAE_o,model,Gemma-3-12B,250,0.0,0.0,0.0,0.0,,,,,0,0,0
+Q2,MAE_o,model,Gemma-3-27B,250,0.0,0.0,0.0,0.0,,,,,0,0,0
+Q2,MAE_o,model,Llama-4-Maverick,250,1.0,250.0,1.0,250.0,,,,,0,0,0
+Q2,MAE_o,model,Llama-4-Scout,250,0.0,0.0,0.796,199.0,,,,,0,0,0
+Q2,MAE_o,model,Mistral-Small-3.2,250,0.0,0.0,0.204,51.0,,,,,0,0,0
+Q2,MAE_o,model,Qwen-2.5,250,1.0,250.0,1.0,250.0,,,,,0,0,0
+Q2,MAE_b,model,Gemma-3-12B,250,0.044,11.0,0.448,112.0,,,,,0,0,0
+Q2,MAE_b,model,Gemma-3-27B,250,0.008,2.0,0.172,43.0,,,,,0,0,0
+Q2,MAE_b,model,Llama-4-Maverick,250,0.032,8.0,0.408,102.0,,,,,0,0,0
+Q2,MAE_b,model,Llama-4-Scout,250,0.0,0.0,0.0,0.0,,,,,0,0,0
+Q2,MAE_b,model,Mistral-Small-3.2,250,0.916,229.0,0.972,243.0,,,,,0,0,0
+Q2,MAE_b,model,Qwen-2.5,250,1.0,250.0,1.0,250.0,,,,,0,0,0
+Q2,MAE_o,prompt,Detailed,250,0.0,0.0,0.0,0.0,,,,,0,0,0
+Q2,MAE_o,prompt,Grid-Overlay,250,0.0,0.0,1.0,250.0,,,,,0,0,0
+Q2,MAE_o,prompt,Point-Hint,250,1.0,250.0,1.0,250.0,,,,,0,0,0
+Q2,MAE_o,prompt,Short,250,1.0,250.0,1.0,250.0,,,,,0,0,0
+Q2,MAE_b,prompt,Detailed,250,0.0,0.0,0.0,0.0,,,,,0,0,0
+Q2,MAE_b,prompt,Grid-Overlay,250,0.88,220.0,1.0,250.0,,,,,0,0,0
+Q2,MAE_b,prompt,Point-Hint,250,0.164,41.0,1.0,250.0,,,,,0,0,0
+Q2,MAE_b,prompt,Short,250,0.956,239.0,1.0,250.0,,,,,0,0,0
+Q2,MAE_o,own_prompt_per_model,Gemma-3-12B -> Detailed,250,,,,,Gemma-3-12B,Detailed,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Gemma-3-12B -> Grid-Overlay,250,,,,,Gemma-3-12B,Grid-Overlay,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Gemma-3-12B -> Point-Hint,250,,,,,Gemma-3-12B,Point-Hint,1.0,250.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Gemma-3-12B -> Short,250,,,,,Gemma-3-12B,Short,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Gemma-3-27B -> Detailed,250,,,,,Gemma-3-27B,Detailed,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Gemma-3-27B -> Grid-Overlay,250,,,,,Gemma-3-27B,Grid-Overlay,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Gemma-3-27B -> Point-Hint,250,,,,,Gemma-3-27B,Point-Hint,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Gemma-3-27B -> Short,250,,,,,Gemma-3-27B,Short,1.0,250.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Llama-4-Maverick -> Detailed,250,,,,,Llama-4-Maverick,Detailed,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Llama-4-Maverick -> Grid-Overlay,250,,,,,Llama-4-Maverick,Grid-Overlay,0.72,180.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Llama-4-Maverick -> Point-Hint,250,,,,,Llama-4-Maverick,Point-Hint,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Llama-4-Maverick -> Short,250,,,,,Llama-4-Maverick,Short,0.28,70.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Llama-4-Scout -> Detailed,250,,,,,Llama-4-Scout,Detailed,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Llama-4-Scout -> Grid-Overlay,250,,,,,Llama-4-Scout,Grid-Overlay,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Llama-4-Scout -> Point-Hint,250,,,,,Llama-4-Scout,Point-Hint,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Llama-4-Scout -> Short,250,,,,,Llama-4-Scout,Short,1.0,250.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Mistral-Small-3.2 -> Detailed,250,,,,,Mistral-Small-3.2,Detailed,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Mistral-Small-3.2 -> Grid-Overlay,250,,,,,Mistral-Small-3.2,Grid-Overlay,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Mistral-Small-3.2 -> Point-Hint,250,,,,,Mistral-Small-3.2,Point-Hint,1.0,250.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Mistral-Small-3.2 -> Short,250,,,,,Mistral-Small-3.2,Short,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Qwen-2.5 -> Detailed,250,,,,,Qwen-2.5,Detailed,1.0,250.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Qwen-2.5 -> Grid-Overlay,250,,,,,Qwen-2.5,Grid-Overlay,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Qwen-2.5 -> Point-Hint,250,,,,,Qwen-2.5,Point-Hint,0.0,0.0,0,0,0
+Q2,MAE_o,own_prompt_per_model,Qwen-2.5 -> Short,250,,,,,Qwen-2.5,Short,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Gemma-3-12B -> Detailed,250,,,,,Gemma-3-12B,Detailed,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Gemma-3-12B -> Grid-Overlay,250,,,,,Gemma-3-12B,Grid-Overlay,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Gemma-3-12B -> Point-Hint,250,,,,,Gemma-3-12B,Point-Hint,0.132,33.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Gemma-3-12B -> Short,250,,,,,Gemma-3-12B,Short,0.868,217.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Gemma-3-27B -> Detailed,250,,,,,Gemma-3-27B,Detailed,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Gemma-3-27B -> Grid-Overlay,250,,,,,Gemma-3-27B,Grid-Overlay,0.636,159.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Gemma-3-27B -> Point-Hint,250,,,,,Gemma-3-27B,Point-Hint,0.292,73.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Gemma-3-27B -> Short,250,,,,,Gemma-3-27B,Short,0.072,18.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Llama-4-Maverick -> Detailed,250,,,,,Llama-4-Maverick,Detailed,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Llama-4-Maverick -> Grid-Overlay,250,,,,,Llama-4-Maverick,Grid-Overlay,0.012,3.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Llama-4-Maverick -> Point-Hint,250,,,,,Llama-4-Maverick,Point-Hint,0.188,47.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Llama-4-Maverick -> Short,250,,,,,Llama-4-Maverick,Short,0.8,200.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Llama-4-Scout -> Detailed,250,,,,,Llama-4-Scout,Detailed,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Llama-4-Scout -> Grid-Overlay,250,,,,,Llama-4-Scout,Grid-Overlay,0.012,3.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Llama-4-Scout -> Point-Hint,250,,,,,Llama-4-Scout,Point-Hint,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Llama-4-Scout -> Short,250,,,,,Llama-4-Scout,Short,0.988,247.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Mistral-Small-3.2 -> Detailed,250,,,,,Mistral-Small-3.2,Detailed,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Mistral-Small-3.2 -> Grid-Overlay,250,,,,,Mistral-Small-3.2,Grid-Overlay,1.0,250.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Mistral-Small-3.2 -> Point-Hint,250,,,,,Mistral-Small-3.2,Point-Hint,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Mistral-Small-3.2 -> Short,250,,,,,Mistral-Small-3.2,Short,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Qwen-2.5 -> Detailed,250,,,,,Qwen-2.5,Detailed,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Qwen-2.5 -> Grid-Overlay,250,,,,,Qwen-2.5,Grid-Overlay,0.92,230.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Qwen-2.5 -> Point-Hint,250,,,,,Qwen-2.5,Point-Hint,0.0,0.0,0,0,0
+Q2,MAE_b,own_prompt_per_model,Qwen-2.5 -> Short,250,,,,,Qwen-2.5,Short,0.08,20.0,0,0,0

@@ -1,0 +1,4 @@
+question_id,statistic,value,ci_low,ci_high,n,test
+Q0,threshold,-0.1045576407506702,,,1155,99th percentile of pooled bare-soil exemplar pixels (no statistical test)
+Q0,pooled_mae,10.923508058202916,,,1155,descriptive (no interval; this notebook computes predictions only)
+Q0,pooled_mean_bias,-10.004567508956246,,,1155,descriptive (no interval; this notebook computes predictions only)

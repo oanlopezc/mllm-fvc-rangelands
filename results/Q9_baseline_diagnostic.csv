@@ -1,0 +1,20 @@
+question_id,statistic,value,ci_lo,ci_hi,n,test,asserted_a18,may_rank_methods,asserted_a19
+Q9,mae,10.923508058202916,9.903968923064035,12.05413603088779,1155,image bootstrap CI,True,,
+Q9,rmse,21.51770584128593,19.799503716053277,23.38238433837184,1155,image bootstrap CI,True,,
+Q9,mean_bias,-10.004567508956246,-11.118653773329722,-8.959702469267675,1155,image bootstrap CI,True,,
+Q9,pearson_r_diagnostic_only,0.514836977134189,,,1155,"Pearson correlation, diagnostic only, may_rank_methods=FALSE",True,False,
+Q9,spearman_r,0.39872774389503807,0.3443046881740623,0.4504309703827887,1155,"tie-corrected Spearman, image bootstrap CI",True,,
+Q9,coverage_pct,100.0,,,1155,computed,False,,
+Q9,mae_constant3_predictor,11.855367965367966,,,1155,"asserted (A19), 11.86 +/- 0.05",False,,True
+Q9,mae_b_median_predictor,11.855367965367966,,,1155,"computed, not asserted (A14/A19)",False,,False
+Q9,mae_b_zero_predictor,12.478831168831169,,,1155,computed,False,,
+Q9,mae_bin_0-20,3.4105974049992147,3.1406297852356584,3.7111838744109504,933,image bootstrap CI (bin subset),False,,
+Q9,signed_bias_bin_0-20,-2.273002191301567,,,933,computed,False,,
+Q9,mae_bin_20-40,25.791040040482002,24.414879011374463,27.14033898997232,108,image bootstrap CI (bin subset),False,,
+Q9,signed_bias_bin_20-40,-25.791040040482002,,,108,computed,False,,
+Q9,mae_bin_40-60,45.71931338862404,42.31943335295441,48.33353170153126,46,image bootstrap CI (bin subset),False,,
+Q9,signed_bias_bin_40-60,-45.71931338862404,,,46,computed,False,,
+Q9,mae_bin_60-80,57.88995357953209,53.1613276627467,62.32556558652139,38,image bootstrap CI (bin subset),False,,
+Q9,signed_bias_bin_60-80,-57.88995357953209,,,38,computed,False,,
+Q9,mae_bin_80-100,78.20751506963732,70.85162449470997,83.19583525947127,30,image bootstrap CI (bin subset),False,,
+Q9,signed_bias_bin_80-100,-78.20751506963732,,,30,computed,False,,

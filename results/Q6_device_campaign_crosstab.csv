@@ -1,0 +1,7 @@
+question_id,device,campaign,n_images,cell_type
+Q6,samsung Galaxy S25 Ultra,campaign_2,0,structural_zero
+Q6,samsung SM-S908E,campaign_2,581,observed
+Q6,samsung Galaxy S25 Ultra,campaign_1,0,structural_zero
+Q6,samsung SM-S908E,campaign_1,420,observed
+Q6,samsung Galaxy S25 Ultra,campaign_3,154,observed
+Q6,samsung SM-S908E,campaign_3,0,structural_zero

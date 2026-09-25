@@ -1,0 +1,4 @@
+question_id,ranking_level,n_units,kendall_tau_b,top_local,top_api,top_configuration_matches,tier,corrected,claim_wording
+Q7,model,6,0.3333333333333333,Qwen-2.5,Qwen-2.5,True,secondary,False,stack and possibly weights
+Q7,prompt,4,0.3333333333333334,Short,Grid-Overlay,False,secondary,False,stack and possibly weights
+Q7,model_x_prompt,24,0.7463768115942029,Llama-4-Maverick / Short,Qwen-2.5 / Grid-Overlay,False,secondary,False,stack and possibly weights

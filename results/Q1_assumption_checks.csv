@@ -1,0 +1,72 @@
+id,description,passed,detail
+A1,"D1 has 1,155 rows, Filename unique",True,"n=1155, unique=True"
+A2,"D1<->D2/D3/D4 1:1 join, 0 unmatched",True,"1155/1155 all three, 0 unmatched"
+A3,"each local file has 13,860 rows, 1,155 images, 12 rows/image",True,"Gemma-3-12B: n=13860, images=1155, per_image_ok=True; Gemma-3-27B: n=13860, images=1155, per_image_ok=True; Llama-4-Maverick: n=13860, images=1155, per_image_ok=True; Llama-4-Scout: n=13860, images=1155, per_image_ok=True; Mistral-Small-3.2: n=13860, images=1155, per_image_ok=True; Qwen-2.5: n=13860, images=1155, per_image_ok=True"
+A4,model derived from filename yields exactly the 6 recorded levels,True,"levels=['Gemma-3-12B', 'Gemma-3-27B', 'Llama-4-Maverick', 'Llama-4-Scout', 'Mistral-Small-3.2', 'Qwen-2.5']"
+A5,"D2.reference == D1.'Veg %' on all 1,155 rows",True,1155/1155 match
+A6,reference bin counts are 933/108/46/38/30,True,"observed={'0-20': 933, '20-40': 108, '40-60': 46, '60-80': 38, '80-100': 30}"
+A7,"count of images with D1.v7 == 0 (computed, not asserted)",True,n_zero_reference=231
+A8,"D2.v3 and D2.v4 each have exactly 3 levels (counts computed, not assumed)",True,"v3_counts={0: 766, 1: 94, 2: 295}, v4_counts={0: 699, 1: 220, 2: 236}"
+A9,"device x campaign crosstab: 3 named non-zero cells (154/581/420), 3 named structural zeros",True,"shape=(2, 3), nonzero_cells_observed={('samsung Galaxy S25 Ultra', 'campaign_3'): 154, ('samsung SM-S908E', 'campaign_2'): 581, ('samsung SM-S908E', 'campaign_1'): 420}, zero_cells_observed={('samsung Galaxy S25 Ultra', 'campaign_2'): 0, ('samsung Galaxy S25 Ultra', 'campaign_1'): 0, ('samsung SM-S908E', 'campaign_3'): 0}"
+A10,in_scope & stack=='local' yields exactly 5 Scout JSON_PARSE_FAILURE on Grid-Overlay (4 base + 1 masked_gray),True,"n_total=5, by_variant={'base': 4, 'masked_gray': 1}"
+A11,"D8 has 6 models x 2 runs x 100 images, prompt constant Short",True,"n=1200, models=6, runs=['run1', 'run2'], prompt_levels=['Short']"
+A12,"no notebook reads D7, D10, model_performance_summary.csv, or a path outside the project",True,"forbidden_paths_declared=('call_telemetry.csv', 'api_retry_summary.csv', 'model_performance_summary.csv'); loaders in this module touch RAW only"
+A13,"per-model unusable D5.v5 confidence count, computed on base/local frame only",True,"per_model_unusable={'Gemma-3-12B': 59, 'Gemma-3-27B': 0, 'Llama-4-Maverick': 1, 'Llama-4-Scout': 44, 'Mistral-Small-3.2': 5, 'Qwen-2.5': 0}"
+A14,B_median and B_mean computed from D1.v7 over the full frame (oracle baselines),True,"B_median=3.0, B_mean=12.478831168831169"
+K1,pairing complete: every image has exactly 24 base/local rows,True,"n_images=1155, n_images_with_wrong_count=0, expected_per_image=24"
+K5,"D'Agostino-Pearson normality (Gemma-3-12B), context only",True,"statistic=962.066, p=1.23e-209"
+K5,"D'Agostino-Pearson normality (Gemma-3-27B), context only",True,"statistic=1598.192, p=0"
+K5,"D'Agostino-Pearson normality (Llama-4-Maverick), context only",True,"statistic=1851.836, p=0"
+K5,"D'Agostino-Pearson normality (Llama-4-Scout), context only",True,"statistic=1807.521, p=0"
+K5,"D'Agostino-Pearson normality (Mistral-Small-3.2), context only",True,"statistic=1229.678, p=9.52e-268"
+K5,"D'Agostino-Pearson normality (Qwen-2.5), context only",True,"statistic=597.555, p=1.75e-130"
+K6,"per-bin sd(|e|), bin 0-20, context only",True,sd=7.583
+K6,"per-bin sd(|e|), bin 20-40, context only",True,sd=9.640
+K6,"per-bin sd(|e|), bin 40-60, context only",True,sd=11.587
+K6,"per-bin sd(|e|), bin 60-80, context only",True,sd=16.361
+K6,"per-bin sd(|e|), bin 80-100, context only",True,sd=20.784
+K10,"between-image independence -- not checkable, assumed and not quantified in this notebook",,"assumed, not tested"
+C11,n_reproduced 92 (Maverick) / 100 (others),True,"observed={'Gemma-3-12B': 100, 'Gemma-3-27B': 100, 'Llama-4-Maverick': 92, 'Llama-4-Scout': 100, 'Mistral-Small-3.2': 100, 'Qwen-2.5': 100}, expected={'Gemma-3-12B': 100, 'Gemma-3-27B': 100, 'Llama-4-Maverick': 92, 'Llama-4-Scout': 100, 'Mistral-Small-3.2': 100, 'Qwen-2.5': 100}"
+K4,"bootstrap bin coverage: empty-bin resamples across the model, prompt and top-set bootstraps",True,n_violations=0; 0 bootstrap(s) over the 1% switch threshold
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Gemma-3-12B - Gemma-3-27B",True,"skew=0.306, hl_vs_median_gap=0.250"
+K3,"tie burden, Gemma-3-12B - Gemma-3-27B",True,zero_share=0.110
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Gemma-3-12B - Llama-4-Maverick",True,"skew=-0.115, hl_vs_median_gap=0.450"
+K3,"tie burden, Gemma-3-12B - Llama-4-Maverick",True,zero_share=0.024
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Gemma-3-12B - Llama-4-Scout",True,"skew=-0.212, hl_vs_median_gap=0.250"
+K3,"tie burden, Gemma-3-12B - Llama-4-Scout",True,zero_share=0.025
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Gemma-3-12B - Mistral-Small-3.2",True,"skew=0.099, hl_vs_median_gap=0.250"
+K3,"tie burden, Gemma-3-12B - Mistral-Small-3.2",True,zero_share=0.038
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Gemma-3-12B - Qwen-2.5",True,"skew=0.455, hl_vs_median_gap=0.375"
+K3,"tie burden, Gemma-3-12B - Qwen-2.5",True,zero_share=0.050
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Gemma-3-27B - Llama-4-Maverick",True,"skew=-0.831, hl_vs_median_gap=-0.500"
+K3,"tie burden, Gemma-3-27B - Llama-4-Maverick",True,zero_share=0.018
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Gemma-3-27B - Llama-4-Scout",False,"skew=-1.020, hl_vs_median_gap=-0.600"
+K3,"tie burden, Gemma-3-27B - Llama-4-Scout",True,zero_share=0.022
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Gemma-3-27B - Mistral-Small-3.2",True,"skew=-0.070, hl_vs_median_gap=0.000"
+K3,"tie burden, Gemma-3-27B - Mistral-Small-3.2",True,zero_share=0.033
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Gemma-3-27B - Qwen-2.5",True,"skew=0.163, hl_vs_median_gap=-0.050"
+K3,"tie burden, Gemma-3-27B - Qwen-2.5",True,zero_share=0.053
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Llama-4-Maverick - Llama-4-Scout",True,"skew=-0.810, hl_vs_median_gap=-0.438"
+K3,"tie burden, Llama-4-Maverick - Llama-4-Scout",True,zero_share=0.213
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Llama-4-Maverick - Mistral-Small-3.2",True,"skew=0.247, hl_vs_median_gap=0.250"
+K3,"tie burden, Llama-4-Maverick - Mistral-Small-3.2",True,zero_share=0.026
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Llama-4-Maverick - Qwen-2.5",True,"skew=0.744, hl_vs_median_gap=-0.325"
+K3,"tie burden, Llama-4-Maverick - Qwen-2.5",True,zero_share=0.138
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Llama-4-Scout - Mistral-Small-3.2",True,"skew=0.664, hl_vs_median_gap=0.250"
+K3,"tie burden, Llama-4-Scout - Mistral-Small-3.2",True,zero_share=0.019
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Llama-4-Scout - Qwen-2.5",True,"skew=0.899, hl_vs_median_gap=0.125"
+K3,"tie burden, Llama-4-Scout - Qwen-2.5",True,zero_share=0.119
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Mistral-Small-3.2 - Qwen-2.5",True,"skew=0.423, hl_vs_median_gap=0.125"
+K3,"tie burden, Mistral-Small-3.2 - Qwen-2.5",True,zero_share=0.048
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Detailed - Grid-Overlay",False,"skew=1.999, hl_vs_median_gap=-0.150"
+K3,"tie burden, Detailed - Grid-Overlay",True,zero_share=0.048
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Detailed - Point-Hint",False,"skew=1.834, hl_vs_median_gap=-0.042"
+K3,"tie burden, Detailed - Point-Hint",True,zero_share=0.033
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Detailed - Short",False,"skew=2.349, hl_vs_median_gap=0.083"
+K3,"tie burden, Detailed - Short",True,zero_share=0.048
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Grid-Overlay - Point-Hint",True,"skew=-0.436, hl_vs_median_gap=0.083"
+K3,"tie burden, Grid-Overlay - Point-Hint",True,zero_share=0.060
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Grid-Overlay - Short",True,"skew=-0.332, hl_vs_median_gap=0.000"
+K3,"tie burden, Grid-Overlay - Short",True,zero_share=0.060
+K2,"symmetry of paired differences (Hodges-Lehmann reading only), Point-Hint - Short",True,"skew=0.567, hl_vs_median_gap=0.167"
+K3,"tie burden, Point-Hint - Short",True,zero_share=0.101

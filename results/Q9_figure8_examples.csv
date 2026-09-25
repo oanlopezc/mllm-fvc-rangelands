@@ -1,0 +1,3 @@
+question_id,role,image,reference,baseline_prediction,absolute_error
+Q9,best,IMG_20250112_151917.jpg,70.0,45.9352074779616,24.064792522038402
+Q9,worst,IMG_20250115_143343.jpg,98.0,0.5837912087912088,97.41620879120879

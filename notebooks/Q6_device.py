@@ -117,10 +117,10 @@ assumption_checks = pd.concat(assumption_rows, ignore_index=True)
 
 if not (a9.passed and k1.passed and c11.passed):
     raise C.AssertionFailed(
-        "A9, K1 or C11 failed — stopping per '(a failed assertion stops the "
-        "notebook)'. If A9 specifically failed, device would have become "
-        "partially estimable and this question must go back to the user "
-        "before anything is estimated."
+        "A9, K1 or C11 failed, so the notebook stops here. A9 failing would mean "
+        "the device and campaign columns no longer coincide on every row, which "
+        "makes device partially estimable and changes what this question can ask. "
+        "Nothing is estimated until that is resolved."
     )
 
 # %% [markdown]

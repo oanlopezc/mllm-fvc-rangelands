@@ -1,0 +1,5 @@
+question_id,statistic,value,ci_low,ci_high,n,test,tier,corrected
+Q8,n_images_low_four_bins_sum,933.0,,,1155,eight-bin nesting check against Q1 bottom bin,secondary,False
+Q8,n_zero_reference_images,231.0,,,1155,"computed at run time (A7), not asserted",secondary,False
+Q8,kendall_tau_b_5bin_vs_8bin_ranking,0.8666666666666666,,,6,"Kendall tau-b, model ranking by balanced MAE",secondary,False
+Q8,balanced_mae_8bin_pooled_across_models,12.733135121543828,12.105229071630921,13.403722105156728,1155,"image bootstrap BCa, pooled across 6 models",secondary,False
