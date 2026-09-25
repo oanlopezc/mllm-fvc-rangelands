@@ -1,0 +1,26 @@
+[workspace]
+name = "mllm-fvc-rangelands"
+version = "1.0.0"
+description = "Analysis code for zero-shot fractional vegetation cover estimation with multimodal large language models"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+# Pinned to the exact versions that produced the files in results/. The analysis
+# is deterministic given these versions and the seed each notebook sets, so a
+# looser constraint would weaken the only claim this file exists to make.
+[dependencies]
+python = "==3.12.14"
+pandas = "==3.0.5"
+numpy = "==2.5.2"
+scipy = "==1.18.0"
+statsmodels = "==0.15.0"
+matplotlib = "==3.11.1"
+jupytext = "==1.19.5"
+nbconvert = "==7.17.1"
+ipykernel = "==7.3.0"
+
+[tasks]
+# Render one notebook to notebooks/rendered/ and execute it, which is also how
+# it writes its result files.
+#   pixi run render notebooks/Q1_accuracy.py
+render = "jupytext --to notebook --output-dir notebooks/rendered --execute"

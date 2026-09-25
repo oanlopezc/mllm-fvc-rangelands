@@ -1,0 +1,97 @@
+cff-version: 1.2.0
+message: >-
+  If you use this code, please cite the paper listed under preferred-citation.
+  The photographs, annotations and model responses it reads are deposited
+  separately; see the dataset entry under references.
+title: >-
+  Analysis code for zero-shot fractional vegetation cover estimation with
+  multimodal large language models
+abstract: >-
+  Inference and analysis code behind the paper. It holds the scripts that put
+  six open-weight multimodal models through a model-by-prompt grid on 1,155
+  quadrat photographs, the parser that reduces each response to a vegetation
+  percentage and a self-reported confidence, an ExG-ExR vegetation-index
+  baseline, and one notebook per research question producing every statistic
+  the paper reports.
+type: software
+version: 1.0.0
+license: MIT
+keywords:
+  - fractional vegetation cover
+  - rangeland monitoring
+  - multimodal large language models
+  - zero-shot estimation
+  - quadrat photography
+  - arid ecosystems
+authors:
+  - family-names: Lopez
+    given-names: Omar A.
+    orcid: https://orcid.org/0000-0002-2954-0153
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+    email: omar.lopezcamargo@kaust.edu.sa
+  - family-names: Elías-Lara
+    given-names: Mariana
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+  - family-names: El Hajj
+    given-names: Marcel M.
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+  - family-names: Scilla
+    given-names: Dario
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+  - family-names: Cheng
+    given-names: Hua
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+  - family-names: Angulo
+    given-names: Victor
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+  - family-names: Rodriguez
+    given-names: Jorge L.
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+  - family-names: Alwahas
+    given-names: Areej
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+  - family-names: Johansen
+    given-names: Kasper
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+  - family-names: McCabe
+    given-names: Matthew F.
+    affiliation: King Abdullah University of Science and Technology (KAUST)
+preferred-citation:
+  type: article
+  title: >-
+    Exploring the Use of Multimodal Large Language Models for Zero-Shot
+    Fractional Vegetation Cover Estimation
+  journal: Ecological Informatics
+  year: 2026
+  status: submitted
+  authors:
+    - family-names: Lopez
+      given-names: Omar A.
+      orcid: https://orcid.org/0000-0002-2954-0153
+    - family-names: Elías-Lara
+      given-names: Mariana
+    - family-names: El Hajj
+      given-names: Marcel M.
+    - family-names: Scilla
+      given-names: Dario
+    - family-names: Cheng
+      given-names: Hua
+    - family-names: Angulo
+      given-names: Victor
+    - family-names: Rodriguez
+      given-names: Jorge L.
+    - family-names: Alwahas
+      given-names: Areej
+    - family-names: Johansen
+      given-names: Kasper
+    - family-names: McCabe
+      given-names: Matthew F.
+references:
+  - type: data
+    title: >-
+      Quadrat photographs, field reference cover and multimodal model responses
+      for zero-shot fractional vegetation cover estimation in arid rangelands
+    doi: 10.5281/zenodo.22165601
+    year: 2026
+    authors:
+      - name: The authors of the accompanying paper

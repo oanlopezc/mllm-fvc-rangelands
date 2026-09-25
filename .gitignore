@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# pixi builds the environment from pixi.toml and pixi.lock; the environment
+# itself is never committed.
+.pixi/
+
+# Notebooks are authored as jupytext .py files under notebooks/ and rendered to
+# .ipynb. The rendered copies that carry outputs are committed deliberately;
+# anything jupytext writes as a side effect is not.
+notebooks/rendered/.ipynb_checkpoints/
+
+.DS_Store
