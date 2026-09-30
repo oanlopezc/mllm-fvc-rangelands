@@ -20,38 +20,3 @@ Entries marked **verified** were checked value by value against that file.
 | 3.7.2 Reasoning text | share of responses carrying prose, per model and prompt | **no result file**; see Known gaps |
 | 3.7.3 API pathway | exact agreement, median difference, Kendall tau_b, rank reversals | `Q7_pathway_agreement`, `Q7_pathway_by_configuration`, `Q7_ranking_agreement`, `Q7_rank_reversals` **verified** |
 | 3.8 Computational demand | MAE_b for the Gemma pair; weights and latency | `Q1_metrics_by_model` for the MAE values; hardware figures have **no result file** |
-
-## Discussion
-
-Section 4 restates Results values and introduces no new analysis, with one
-exception: 4.6.3 Image Acquisition relies on the device-by-campaign structure in
-`Q6_device_campaign_crosstab` and `Q6_identifiability_demonstration`.
-
-## Files with no reported number
-
-The remaining files in `results/` are not cited anywhere in the manuscript. That
-includes all `*_assumption_checks` and all `*_clustered_companion` files, the Q2
-cross-validation detail, and the Q3/Q4 interaction and per-configuration files.
-
-They are shipped because each answers a methodological question a reader may
-reasonably ask. The `*_assumption_checks` files are the record that each test's
-assumptions were checked. The `*_clustered_companion` files measure what the
-image-level independence assumption costs, by refitting with the campaigns
-treated as clusters. The paper reports the image-level intervals; the clustered
-refits are shipped beside them so that the cost of that assumption is on the
-record rather than asserted to be small.
-
-## Library
-
-Every notebook runs on one shared library, `notebooks/_common.py`, so that no
-two questions can drift apart on a data loader, a bin definition, a bootstrap or
-a correction that has to be identical across all of them.
-
-## Known gaps
-
-- **Reasoning text (3.7.2 and Table 5)** is computed by no notebook and held in
-  no result file. Those numbers appear only in the manuscript. They are
-  recoverable from the response logs and would need a notebook of their own if
-  that section stays.
-- **Hardware figures in 3.8** (weight footprints, latency) are deployment
-  metadata, not analysis output.
