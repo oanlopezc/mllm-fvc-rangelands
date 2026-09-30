@@ -1259,7 +1259,7 @@ print(result_summary[["model", "k8_degenerate"]].assign(
 # share alongside it** — a filtered MAE reported alone is a composition change
 # dressed as an accuracy gain.
 #
-# **The cutoff grid is the realisable one, verified here rather than assumed.**
+# **The cutoff grid is the realisable one, checked below.**
 # On the *model x prompt* cell, the unit this notebook actually filters on,
 # `D5.v5` (self-reported confidence) takes only **3–10 distinct values per
 # cell**. The grid used below is therefore the distinct

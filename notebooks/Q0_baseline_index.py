@@ -484,45 +484,6 @@ fig.savefig(RENDERED_DIR / "Q0_prediction_vs_reference.png", dpi=110, bbox_inche
 plt.show()
 
 # %% [markdown]
-# ## Keeping the copy of `traditional_baseline.csv` as supplied
-#
-# This notebook writes `traditional_baseline.csv`, and a copy of that file may
-# already sit in `01_input/raw/` when it runs. The cell below copies whatever
-# is on disk to `00_context/traditional_baseline_supplied.csv`, with a short
-# note on where it came from, so the copy as supplied is kept alongside the
-# one this notebook computes. The copy happens only when no preserved file is
-# there yet, so running this notebook again leaves the preserved copy
-# untouched.
-
-# %%
-_preserved_path = ROOT / "00_context" / "traditional_baseline_supplied.csv"
-_preserved_note_path = ROOT / "00_context" / "traditional_baseline_supplied.README.md"
-
-if _preserved_path.exists():
-    print(f"{_preserved_path} already exists — leaving it untouched (guard against re-run clobbering it).")
-else:
-    import shutil
-    shutil.copy2(RAW / "traditional_baseline.csv", _preserved_path)
-    _preserved_note_path.write_text(
-        "# traditional_baseline_supplied.csv\n\n"
-        "This is the `traditional_baseline.csv` that was present in `01_input/raw/` before "
-        "`Q0_baseline_index.py` ran for the first time, preserved here so it is not lost when "
-        "that notebook overwrites the working copy with its own recomputed predictions.\n\n"
-        "## Provenance\n\n"
-        "Named in `00_context/traditional_baseline.README.md` as coming from "
-        "`TraditionalBaseline/notebooks/Rectified_Image_Run.ipynb`. It is not the seeded "
-        "reference implementation kept in `00_context/paper-baseline-reference/`: measured "
-        "directly against that implementation's own per-image output "
-        "(`paper_baseline_per_image.csv`), 1,154 of this file's 1,155 predictions differ "
-        "from the seeded run's, so this file cannot be the seeded run's draw.\n\n"
-        "## Replacement\n\n"
-        "Replaced on 2026-09-14 by `Q0_baseline_index.py`, which recomputes the same method "
-        "with both random draws seeded and reproducible.\n"
-    )
-    print(f"Preserved the supplied file to {_preserved_path}")
-    print(f"Wrote provenance note to {_preserved_note_path}")
-
-# %% [markdown]
 # ## Result
 #
 # This notebook computes the classical ExG-ExR baseline from the 1,155

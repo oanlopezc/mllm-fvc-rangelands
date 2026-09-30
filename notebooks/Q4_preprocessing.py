@@ -747,8 +747,7 @@ per_config_df
 # ## The crop/correction/total decomposition by model and by prompt
 #
 # The 24-configuration table above cannot be read off model by model or
-# prompt by prompt without averaging by hand outside this notebook, and a
-# number nothing here produced has no place in the manuscript. This section
+# prompt by prompt without further averaging. This section
 # reports the same three-step decomposition — the crop, the perspective
 # correction and the two together — collapsed onto each of the two axes the
 # 24 configurations cross: six rows for the six models (each averaging over

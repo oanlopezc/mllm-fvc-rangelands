@@ -209,10 +209,8 @@ baseline_bias = float(baseline_e.mean())
 baseline_pearson = float(np.corrcoef(baseline_pred, baseline_ref)[0, 1])
 baseline_spearman, _ = C.spearman_tie_corrected(baseline_pred.values, baseline_ref.values)
 
-# These three quantities are assertion machinery only (A14/A19), retained so
-# that A19's check on the loaded baseline file still runs — they are not
-# part of the reported comparison and do not appear in any chart, table or
-# sentence below: an assertion is checking machinery, not reported content.
+# These three quantities are used only by the consistency check on the loaded
+# baseline file below; they are not part of the reported comparison.
 const3_mae = float((baseline_ref - 3.0).abs().mean())  # A19, asserted 11.86 +/- 0.05
 b_median = float(d1["reference"].median())              # A14, computed not asserted
 b_median_mae = float((d1["reference"] - b_median).abs().mean())
@@ -1802,7 +1800,7 @@ for fname in written:
     print(f"wrote {fname}: {p.stat().st_size} bytes")
 
 # %% [markdown]
-# ## `rng_rectified` isolation, verified rather than assumed
+# ## `rng_rectified` isolation check
 #
 # `rng_rectified` is the last generator this notebook introduces, and nothing
 # after the rectified block draws from it, so no output file downstream of it

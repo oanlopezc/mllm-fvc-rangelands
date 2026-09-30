@@ -59,55 +59,6 @@ def select_determinism_subsample(all_pairs):
     return [all_pairs[i] for i in idx]
 
 
-def load_exp2_split():
-    """{image: split} from config.EXP2_SPLIT_CSV ('selection' or 'confirmation').
-
-    Raises if the split file does not exist. The split is built once, outside this script, and is
-    never regenerated here: regenerating it would move photographs between the two sets and leave
-    the held-out design measuring something other than what earlier runs measured."""
-    if not os.path.exists(config.EXP2_SPLIT_CSV):
-        raise FileNotFoundError(
-            f"{config.EXP2_SPLIT_CSV} not found -- run "
-            f"`python -m experiment1.build_exp2_split` first to build the split."
-        )
-    with open(config.EXP2_SPLIT_CSV, newline="", encoding="utf-8") as f:
-        return {r["image"]: r["split"] for r in csv.DictReader(f)}
-
-
-def select_exp2_pilot_subsample(selection_pairs):
-    """100 photographs drawn from the selection split only, stratified by cover bin.
-
-    A fresh draw rather than select_determinism_subsample's seeded indices: those index the full
-    1,155-photograph list, where this draws from the smaller selection-split list, so the same seed
-    against a different population would not reproduce the same selection and there is nothing to
-    be gained by pretending it would."""
-    with open(config.JOINED_CSV, newline="", encoding="utf-8") as f:
-        ref_by_image = {r["filename"]: float(r["reference"]) for r in csv.DictReader(f)}
-
-    by_bin = {}
-    for fn, ref in selection_pairs:
-        bin_label = None
-        for lo, hi in zip(config.EXP2_FVC_BIN_EDGES[:-1], config.EXP2_FVC_BIN_EDGES[1:]):
-            if lo <= ref < hi or (hi == config.EXP2_FVC_BIN_EDGES[-1] and ref == hi):
-                bin_label = f"{lo}-{hi}"
-                break
-        by_bin.setdefault(bin_label, []).append((fn, ref))
-
-    rng = random.Random(config.EXP2_SPLIT_SEED)
-    n_bins = len(by_bin)
-    per_bin_n = config.EXP2_PILOT_N // n_bins
-    remainder = config.EXP2_PILOT_N - per_bin_n * n_bins
-    out = []
-    for i, (bin_label, members) in enumerate(sorted(by_bin.items())):
-        members = sorted(members)
-        rng.shuffle(members)
-        take = per_bin_n + (1 if i < remainder else 0)  # spread the remainder across the first
-                                                          # few bins rather than dumping it in one
-        out.extend(members[:min(take, len(members))])
-    out.sort()
-    return out
-
-
 def make_row(image, reference, prompt_id, model_name, run_type, veg, conf, raw_text,
              latency_ms, peak_mem_mb, batch_size, power_w, error):
     return {
@@ -146,10 +97,8 @@ class Worker:
         print(f"[{model_name}] loading model from {self.model_path}, device_map="
               f"{device_map or {'': 0}} max_memory={max_memory} "
               f"(physical GPUs {self.physical_gpus})", flush=True)
-        # config.IMAGE_MAX_PIXELS is None, so this is a no-op unless that setting is changed. The
-        # cap is offered rather than applied: whether to limit the pixels a model's own image
-        # processor keeps changes what the run measures, which is a decision about the experiment
-        # and not something a worker should apply on its own.
+        # config.IMAGE_MAX_PIXELS is None: each model's image processor keeps its default
+        # resolution.
         self.model, self.processor = common.load_model(
             self.model_path, image_max_pixels=config.IMAGE_MAX_PIXELS,
             device_map=device_map, max_memory=max_memory,
@@ -345,70 +294,14 @@ class Worker:
             return
         self.run_phase("full_grid", self.all_pairs, config.PROMPT_IDS)
 
-    def run_validation_subsample(self):
-        """The same seeded 100-photograph subsample as the determinism check, against all four
-        prompts rather than one, logged under run_type='validation_subsample'. Leaves
-        determinism_run1/2 and full_grid untouched."""
-        self.run_phase("validation_subsample", self.determinism_pairs, config.PROMPT_IDS)
-
-    def run_validation_subsample_v2(self):
-        """A second pass over the same 100 photographs and all four prompts, with the same seed and
-        the same selection logic as validation_subsample rather than a fresh draw, so the two
-        passes line up photograph for photograph. Its own run_type keeps them separable."""
-        self.run_phase("validation_subsample_v2", self.determinism_pairs, config.PROMPT_IDS)
-
-    def _exp2_pairs_for_split(self, split_name):
-        exp2_split = load_exp2_split()
-        pairs = [(fn, ref) for fn, ref in self.all_pairs if exp2_split.get(fn) == split_name]
-        missing = [fn for fn, _ in self.all_pairs if fn not in exp2_split]
-        if missing:
-            print(f"[{self.model_name}] WARNING: {len(missing)} images have no exp2 split "
-                  f"assignment (not in {config.EXP2_SPLIT_CSV}) -- excluded from this run",
-                  flush=True)
-        return pairs
-
-    def run_exp2_pilot(self):
-        """The four dormant-clause prompts on a 100-photograph subsample of the selection split,
-        stratified by cover bin. run_type='exp2_pilot'. Needs the split file named by
-        config.EXP2_SPLIT_CSV to exist already."""
-        selection_pairs = self._exp2_pairs_for_split("selection")
-        pilot_pairs = select_exp2_pilot_subsample(selection_pairs)
-        print(f"[{self.model_name}] exp2_pilot: {len(pilot_pairs)} images "
-              f"(stratified subsample of {len(selection_pairs)} selection-split images)",
-              flush=True)
-        self.run_phase("exp2_pilot", pilot_pairs, config.EXP2_PROMPT_IDS)
-
-    def run_exp2_selection(self):
-        """The four dormant-clause prompts on the rest of the selection split. The 100 pilot
-        photographs are left out, since they are already logged under run_type='exp2_pilot';
-        the exp2_pilot and exp2_selection rows together cover the whole selection split.
-        run_type='exp2_selection'."""
-        selection_pairs = self._exp2_pairs_for_split("selection")
-        pilot_pairs = set(select_exp2_pilot_subsample(selection_pairs))
-        remaining = [p for p in selection_pairs if p not in pilot_pairs]
-        print(f"[{self.model_name}] exp2_selection: {len(remaining)} images "
-              f"({len(selection_pairs)} selection-split total minus {len(pilot_pairs)} already "
-              f"done in exp2_pilot)", flush=True)
-        self.run_phase("exp2_selection", remaining, config.EXP2_PROMPT_IDS)
-
-    def run_exp2_confirmation(self):
-        """The four dormant-clause prompts on the whole confirmation split, the part of the dataset
-        held back while the clause was chosen. run_type='exp2_confirmation'. This is the run that
-        measures the clause, because it is the only one scored on photographs that played no part
-        in selecting it."""
-        confirmation_pairs = self._exp2_pairs_for_split("confirmation")
-        print(f"[{self.model_name}] exp2_confirmation: {len(confirmation_pairs)} images",
-              flush=True)
-        self.run_phase("exp2_confirmation", confirmation_pairs, config.EXP2_PROMPT_IDS)
-
     def run_full_grid_fixed(self):
         """The full 1,155-photograph grid under the settings this code holds: text before image in
         the content list, MAX_NEW_TOKENS=2048, thumbnail()/BICUBIC resize, a trailing newline on
         every prompt, and the keyed preprocessing cache. This is the run the paper reports.
 
         It carries its own run_type because resumability keys on (image, prompt_id, run_type): rows
-        logged under any other run_type, including the 100-photograph validation subsample, neither
-        satisfy nor shadow this one, so the grid runs across all 1,155 photographs."""
+        logged under any other run_type neither satisfy nor shadow this one, so the grid runs
+        across all 1,155 photographs."""
         self.run_phase("full_grid_fixed", self.all_pairs, config.PROMPT_IDS)
 
     def run_determinism_fixed(self):
@@ -431,14 +324,6 @@ def main():
                          help="dev/debug only: truncate the image list")
     parser.add_argument("--stop-after-determinism", action="store_true",
                          help="run the determinism check only, skip full_grid")
-    parser.add_argument("--validation-subsample", action="store_true",
-                         help="the seeded 100-image determinism subsample against all 4 prompts, "
-                              "run_type=validation_subsample. Mutually exclusive with the normal "
-                              "determinism+full_grid run.")
-    parser.add_argument("--validation-subsample-v2", action="store_true",
-                         help="a second pass over the same 100-image subsample and all 4 prompts, "
-                              "run_type=validation_subsample_v2. Mutually exclusive with the "
-                              "other modes.")
     parser.add_argument("--full-grid-fixed", action="store_true",
                          help="the full 1,155-image grid reported in the paper, "
                               "run_type=full_grid_fixed. Mutually exclusive with the other modes.")
@@ -447,48 +332,14 @@ def main():
                               "run1 then run2) under the same settings as --full-grid-fixed. "
                               "run_type=determinism_run1_fixed/determinism_run2_fixed. Mutually "
                               "exclusive with the other modes.")
-    parser.add_argument("--exp2-pilot", action="store_true",
-                         help="the 4 dormant-clause prompts on a 100-image subsample of the "
-                              "selection split, stratified by cover bin. run_type=exp2_pilot. "
-                              "Needs the split file to exist. Model must be in "
-                              "config.EXP2_MODELS.")
-    parser.add_argument("--exp2-selection", action="store_true",
-                         help="the 4 dormant-clause prompts on the rest of the selection split "
-                              "(pilot images excluded, already logged). "
-                              "run_type=exp2_selection.")
-    parser.add_argument("--exp2-confirmation", action="store_true",
-                         help="the 4 dormant-clause prompts on the whole confirmation split, the "
-                              "part of the dataset held back while the clause was chosen. "
-                              "run_type=exp2_confirmation.")
     args = parser.parse_args()
-
-    exp2_flags = [args.exp2_pilot, args.exp2_selection, args.exp2_confirmation]
-    if sum(exp2_flags) > 1:
-        print("--exp2-pilot / --exp2-selection / --exp2-confirmation are mutually exclusive "
-              "(one stage per invocation).", file=sys.stderr)
-        sys.exit(2)
-    if any(exp2_flags) and args.model not in config.EXP2_MODELS:
-        print(f"{args.model!r} is not in config.EXP2_MODELS {config.EXP2_MODELS} -- the "
-              f"dormant-clause prompts are scoped to these 4 models; Scout and Maverick are "
-              f"served through vLLM instead.", file=sys.stderr)
-        sys.exit(2)
 
     batch_size = args.batch_size or config.MODELS[args.model]["batch_size"]
     worker = Worker(args.model, _gpus, batch_size, limit_images=args.limit_images)
-    if args.validation_subsample:
-        worker.run_validation_subsample()
-    elif args.validation_subsample_v2:
-        worker.run_validation_subsample_v2()
-    elif args.full_grid_fixed:
+    if args.full_grid_fixed:
         worker.run_full_grid_fixed()
     elif args.determinism_fixed:
         worker.run_determinism_fixed()
-    elif args.exp2_pilot:
-        worker.run_exp2_pilot()
-    elif args.exp2_selection:
-        worker.run_exp2_selection()
-    elif args.exp2_confirmation:
-        worker.run_exp2_confirmation()
     else:
         worker.run(stop_after_determinism=args.stop_after_determinism)
     print(f"[{args.model}] worker finished this invocation.", flush=True)

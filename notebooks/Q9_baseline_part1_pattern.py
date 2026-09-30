@@ -383,7 +383,7 @@ baseline_bias_perbin = per_bin_signed_bias_table(d12_frame, "e", "bin", "classic
 # equals the per-bin MAE exactly — every prediction in those bins sits below
 # the reference, so the mean absolute error and the mean signed error
 # coincide. That equality is the arithmetic underneath "no image above 20%
-# cover is over-predicted," verified directly below rather than only stated.
+# cover is over-predicted," which the cell below checks.
 
 # %%
 _published_mae = {"0-20": 3.4106, "20-40": 25.7910, "40-60": 45.7193, "60-80": 57.8900, "80-100": 78.2075}
@@ -607,7 +607,7 @@ print(f"Baseline Pearson r (diagnostic only, may_rank_methods=False) = {baseline
 # underestimates cover, and the underestimation grows with cover: per-bin MAE
 # runs from 3.41 cover points in the 0-20% bin to 78.21 in the 80-100% bin,
 # and in every bin above 20% cover the signed bias equals the per-bin MAE
-# exactly — verified above, not merely stated — because not one of the 222
+# exactly, because not one of the 222
 # images above 20% cover is over-predicted. That is systematic
 # underestimation, and it is total above 20% cover in the specific sense that
 # no image in that range escapes it.

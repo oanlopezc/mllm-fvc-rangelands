@@ -347,9 +347,7 @@ print(f"Galaxy-arm (= campaign_3) per-bin image n: {galaxy_per_bin_n} — "
 # `campaign_3` differs from the other two campaigns in phone optics,
 # site, season, date and observer (C3), and, concretely, in what it
 # photographed: its per-bin composition is not the same as the other two
-# campaigns'. This is reported here because a reviewer will ask about the two
-# phones, and pre-empting that with the crosstab, the rank finding and this
-# compositional check is stronger than waiting to be asked.
+# campaigns'.
 
 # %%
 per_campaign_bin_counts = (

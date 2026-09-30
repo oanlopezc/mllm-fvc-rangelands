@@ -9,10 +9,11 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=150G
 #SBATCH --time=00:55:00
-#SBATCH --output=/path/to/MLLMs-Local/logs/scout_vllm_exp2_full_%j.out
-#SBATCH --error=/path/to/MLLMs-Local/logs/scout_vllm_exp2_full_%j.err
+#SBATCH --output=/path/to/project/logs/scout_vllm_exp2_full_%j.out
+#SBATCH --error=/path/to/project/logs/scout_vllm_exp2_full_%j.err
 #
-# One slice of Scout's full 1,155-photograph grid over the image variants, split by image variant,
+# One slice of Scout's full 1,155-photograph grid for one image variant (original, masked_gray or
+# rectified), split by image variant,
 # prompt group and image range so that each job finishes inside an hour.
 #
 # batch_size=32. Raising the batch size and the memory fraction beyond this lowers generation-phase
@@ -26,17 +27,17 @@
 # that, which reaches the hour with no margin. Each prompt group is therefore halved by image range
 # through --exp2-offset as well, giving roughly 23 to 24 minutes of generation plus the load.
 #
-# Usage: sbatch scripts/run_scout_vllm_exp2_full.sbatch <masked_gray|rectified> <prompts> <offset> <limit>
+# Usage: sbatch scripts/run_scout_vllm_exp2_full.sbatch <original|masked_gray|rectified> <prompts> <offset> <limit>
 
 set -euo pipefail
 
-cd $HOME/MLLMs-Local
+cd "${PROJECT_ROOT:?set PROJECT_ROOT to the directory holding the experiment1 package}"
 mkdir -p logs
 
-SOURCE="${1:?usage: sbatch run_scout_vllm_exp2_full.sbatch <masked_gray|rectified> <prompts> <offset> <limit>}"
-PROMPTS="${2:?usage: sbatch run_scout_vllm_exp2_full.sbatch <masked_gray|rectified> <prompts> <offset> <limit>}"
-OFFSET="${3:?usage: sbatch run_scout_vllm_exp2_full.sbatch <masked_gray|rectified> <prompts> <offset> <limit>}"
-LIMIT="${4:?usage: sbatch run_scout_vllm_exp2_full.sbatch <masked_gray|rectified> <prompts> <offset> <limit>}"
+SOURCE="${1:?usage: sbatch run_scout_vllm_exp2_full.sbatch <original|masked_gray|rectified> <prompts> <offset> <limit>}"
+PROMPTS="${2:?usage: sbatch run_scout_vllm_exp2_full.sbatch <original|masked_gray|rectified> <prompts> <offset> <limit>}"
+OFFSET="${3:?usage: sbatch run_scout_vllm_exp2_full.sbatch <original|masked_gray|rectified> <prompts> <offset> <limit>}"
+LIMIT="${4:?usage: sbatch run_scout_vllm_exp2_full.sbatch <original|masked_gray|rectified> <prompts> <offset> <limit>}"
 
 VENV_PY="${ASSETS_DIR:?set ASSETS_DIR to the directory holding vllm-venv-clean}"/vllm-venv-clean/bin/python
 export VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS=1800
@@ -62,6 +63,6 @@ echo "=== GPU utilization summary (${UTIL_LOG}) ==="
 awk -F', ' 'NR>1 {sum+=$3; n++} END {if (n>0) printf "mean utilization.gpu across %d samples: %.1f%%\n", n, sum/n}' "$UTIL_LOG" || true
 
 echo "=== Progress ==="
-$HOME/.pixi/bin/pixi run --manifest-path $HOME/MLLMs-Local/pixi.toml python -m experiment1.check_progress
+$HOME/.pixi/bin/pixi run --manifest-path "$PROJECT_ROOT"/pixi.toml python -m experiment1.check_progress
 
 echo "=== Scout vLLM exp2 full-grid slice ended: $(date -u --iso-8601=seconds) ==="

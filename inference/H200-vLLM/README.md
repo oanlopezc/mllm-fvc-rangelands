@@ -2,17 +2,10 @@
 
 Code that ran Llama-4-Maverick and Llama-4-Scout through vLLM on NVIDIA H200 GPUs.
 
-## Why these two models are not on the `transformers` path
+## Why vLLM
 
-`transformers` decompresses a quantized checkpoint to bf16 before generation, whatever the hardware
-supports. Maverick's fp8 checkpoint is 416.8 GB on disk and about 803 GB resident on that path,
-which is more than any allocation available here can hold. vLLM's fused low-bit kernels consume the
-fp8 weights directly, at roughly 418 GB resident, close to the on-disk footprint, and that is what
-makes running the model possible at all.
-
-Scout does fit on the `transformers` path, since it ships at bf16, but generates at roughly
-37,900 ms per image there against roughly 24 ms per image under vLLM. That gap decides whether the
-image variants and the sensitivity checks are affordable for it at all.
+vLLM runs Maverick's fp8 checkpoint directly and serves both models with tensor parallelism across
+the GPUs of one node, which the `transformers` path does not.
 
 ## Files
 
@@ -22,13 +15,12 @@ image variants and the sensitivity checks are affordable for it at all.
   preprocessing, the parser and the resumability logic are the same as on that path. Only the
   generation mechanism differs: vLLM's `LLM.chat()` in place of `transformers`' `.generate()`. The
   script is not standalone, since it needs the `experiment1` package from `../A100-Transformers/`
-  importable; it looks for that package under `$MLLM_LOCAL_ROOT`.
+  importable; set `PROJECT_ROOT` to the directory that contains it.
 - **`run_maverick_vllm_fullgrid.sbatch`** is the job that produced Maverick's reported run,
   `full_grid_fixed`, at batch size 1.
-- **`run_scout_vllm_exp2_full.sbatch`** is the job that produced Scout's reported base run,
-  `exp2_original_base`. Scout is the one model whose reported base rows do not sit under
-  `full_grid_fixed`: for Scout that run_type holds the `transformers` rows on A100, which are not
-  reported, so the two must not be read interchangeably.
+- **`run_scout_vllm_exp2_full.sbatch`** is the job that produced Scout's runs on the three image
+  variants, split into slices that each finish within an hour. Scout's rows for the unmodified
+  photographs carry `run_type=exp2_original_base`; the other five models' carry `full_grid_fixed`.
 
 ## Where the determinism check runs
 

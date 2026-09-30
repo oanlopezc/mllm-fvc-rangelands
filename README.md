@@ -32,7 +32,6 @@ quadrats equal weight.
 | `notebooks/` | one jupytext notebook per research question, `Q0` to `Q9` |
 | `results/` | every statistic the paper reports, one CSV per analysis |
 | `PAPER_MAP.md` | each number in the paper traced to the file that produced it |
-| `PROVENANCE.md` | how the results were produced, and where this code departs from the deposited tables |
 
 ### `inference/`
 
@@ -45,11 +44,9 @@ arrangement is what differs between them.
 | `H200-vLLM/` | Llama-4-Maverick, Llama-4-Scout | 2-4x H200 each | vLLM |
 | `API/` | all six, through one gateway | hosted | OpenRouter |
 
-Llama-4-Maverick and Llama-4-Scout could not run through the `transformers`
-path. Maverick's FP8 checkpoint decompresses to about 803 GB in memory under
-`transformers`, which no available allocation could hold, and Scout generates at
-roughly 37,900 ms per image there against roughly 24 ms under vLLM. Each folder
-has its own README.
+Llama-4-Maverick and Llama-4-Scout were served with vLLM, which runs Maverick's
+FP8 weights directly and splits both models across several GPUs. Each folder has
+its own README.
 
 ### `notebooks/`
 
@@ -122,10 +119,6 @@ Capture device is confounded with campaign. One phone captured campaigns 1 and
 2, the other captured campaign 3, so no image exists that separates them.
 `Q6_device.py` exists to demonstrate that rather than to estimate a device
 effect, and reports the 2x3 table cell by cell instead of collapsing it.
-
-`PROVENANCE.md` records the two places where this code knowingly differs from
-the deposited tables, both in `Q9`, and neither affecting a number the paper
-prints.
 
 ## Licence
 

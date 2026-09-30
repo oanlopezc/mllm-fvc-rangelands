@@ -1154,18 +1154,14 @@ plt.show()
 # %% [markdown]
 # ## Reading Layer 1 and Layer 3 by model, and by prompt
 #
-# Every result above is reported at the model x prompt cell, because that is
-# the unit this notebook's design actually supports. But the Results section
-# of the manuscript reads confidence **by model**: five of the six rank their
-# own errors in the right direction at the model level, and Gemma-3-12B is the
-# one that ranks them backwards. The reversal is not uniform across its own
-# prompts either: under *Short* its cell-level rho is -0.062 [-0.124, -0.002],
-# the correct direction, while the other three run positive. Averaging
-# four cell-level numbers on paper, in prose, would put a median into the
-# manuscript with no interval and no code behind it — nothing enters the
-# result unless a computation here produced it, so the model view and the
-# prompt view are computed directly, the same way every cell-level number
-# above was.
+# Every result above is reported at the model x prompt cell. The paper also
+# reads confidence **by model**: five of the six rank their own errors in the
+# right direction at the model level, and Gemma-3-12B ranks them backwards.
+# The reversal is not uniform across its own prompts: under *Short* its
+# cell-level rho is -0.062 [-0.124, -0.002], the correct direction, while the
+# other three run positive. The model view and the prompt view are therefore
+# computed directly here, with their own intervals, rather than averaged from
+# the cell-level values.
 #
 # Both axes are views of the **same 27,720 base/local rows**. The six model
 # rows below are six different subsets of all 1,155 images (one subset per

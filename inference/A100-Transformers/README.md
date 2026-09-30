@@ -17,16 +17,13 @@ job, on NVIDIA A100-SXM4-80GB, through Hugging Face `transformers`.
 - **`run_worker.py`** is the driver. One process serves one model on one GPU. It writes one row per
   (photograph, prompt) pair to that model's own log, and skips any pair the log already records as
   finished, so an interrupted job continues where it stopped when resubmitted. `--full-grid-fixed`
-  runs the full grid reported in the paper (`run_type=full_grid_fixed`). The module and method
-  docstrings describe the other modes it supports: the determinism check, the smaller validation
-  subsamples, and the staged runs for the second prompt set.
+  runs the full grid reported in the paper (`run_type=full_grid_fixed`). Run without
+  that flag, or with `--determinism-fixed`, it runs the determinism check on a seeded
+  100-photograph subsample.
 - **`run_fullgrid_single_model.sbatch`** is the job script for the reported grid: one model, one GPU,
   `--full-grid-fixed`. The four models are independent workers writing to separate logs, so each one
   is submitted on its own. It first checks that the photograph-to-reference join holds exactly 1,155
   rows, then runs the grid.
-- **`run_full_grid_fixed_bundled_withdrawn.sbatch`** is a variant that takes four A100s in a single
-  allocation and runs the four workers in parallel inside it. It is not the script that collected
-  the reported grid; the single-model script above is.
 
 ## What this folder does not cover
 

@@ -59,15 +59,13 @@ def project_root(start: str | Path | None = None) -> Path:
 ROOT = project_root()
 RAW = ROOT / "01_input" / "raw"
 
-# Filenames this module never reads, listed literally rather than by any
-# internal label so a reader can see directly which files are excluded:
-# the two are operational logs of the annotation runs, not vegetation-cover
-# measurements, and the third is an external cross-check summary, not an
-# input to any analysis here.
+# Files that may sit in the input folder but are not analysis inputs: two
+# operational logs of the inference runs and one summary table. The loaders
+# refuse them so no analysis reads them by accident.
 FORBIDDEN_PATHS = (
     "call_telemetry.csv",
     "api_retry_summary.csv",
-    "model_performance_summary.csv",  # external cross-check reference, not an input
+    "model_performance_summary.csv",
 )
 
 MODEL_FILE_STEMS = (

@@ -9,8 +9,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=200G
 #SBATCH --time=03:00:00
-#SBATCH --output=/path/to/MLLMs-Local/logs/maverick_vllm_fullgrid_%j.out
-#SBATCH --error=/path/to/MLLMs-Local/logs/maverick_vllm_fullgrid_%j.err
+#SBATCH --output=/path/to/project/logs/maverick_vllm_fullgrid_%j.out
+#SBATCH --error=/path/to/project/logs/maverick_vllm_fullgrid_%j.err
 #
 # Maverick's full 1,155-photograph grid via vLLM, at batch_size=1. That is the batch size the
 # determinism and validation stages ran at, so the grid is collected under the configuration those
@@ -22,7 +22,7 @@
 
 set -euo pipefail
 
-cd $HOME/MLLMs-Local
+cd "${PROJECT_ROOT:?set PROJECT_ROOT to the directory holding the experiment1 package}"
 mkdir -p logs
 
 VENV_PY="${ASSETS_DIR:?set ASSETS_DIR to the directory holding vllm-venv-clean}"/vllm-venv-clean/bin/python
@@ -37,6 +37,6 @@ nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader
 "${VENV_PY}" worker_vllm.py --model "$MODEL" --tensor-parallel-size 4 --full-grid-fixed --batch-size 1
 
 echo "=== Progress ==="
-$HOME/.pixi/bin/pixi run --manifest-path $HOME/MLLMs-Local/pixi.toml python -m experiment1.check_progress
+$HOME/.pixi/bin/pixi run --manifest-path "$PROJECT_ROOT"/pixi.toml python -m experiment1.check_progress
 
 echo "=== vLLM full grid ended: $(date -u --iso-8601=seconds) ==="

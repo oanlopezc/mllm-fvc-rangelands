@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """vLLM worker for the two Llama-4 models on H200 GPUs, running the same stages as run_worker.py
-(determinism_run1/2, validation_subsample_v2, full_grid_fixed) through vLLM rather than
+(the determinism check, the full grid, and the image variants) through vLLM rather than
 transformers.
 
-vLLM computes on the fp8 weights as they are stored: Maverick occupies about 418 GB resident,
-close to its 417 GB on-disk footprint, where transformers decompresses every quantized tensor to
-bf16 before generation and needs about 803 GB regardless of the hardware underneath.
+vLLM runs Maverick's fp8 weights as they are stored and serves both models with tensor
+parallelism across the GPUs of one node.
 
 Everything except the generation mechanism comes from the transformers path unchanged: the prompts,
 the image preprocessing (common.preprocess_image, so vLLM receives the same resized JPEG every
@@ -22,13 +21,11 @@ automatically, so the check's numbers are read before the grid is launched.
 
 Usage:
     python worker_vllm.py --model Llama-4-Maverick-17B-128E-Instruct-FP8 --tensor-parallel-size 4 --stop-after-determinism
-    python worker_vllm.py --model Llama-4-Maverick-17B-128E-Instruct-FP8 --tensor-parallel-size 4 --validation-subsample-v2
     python worker_vllm.py --model Llama-4-Maverick-17B-128E-Instruct-FP8 --tensor-parallel-size 4 --full-grid-fixed --batch-size 8
     python worker_vllm.py --model Llama-4-Scout-17B-16E-Instruct --tensor-parallel-size 4 \
         --exp2-source rectified --exp2-limit-images 48 --batch-size 24
-        (the base prompts against the rectified photographs on a small subset, to check the
-        arrangement before committing to a full grid; run_type exp2_rectified_base, which no other
-        stage writes to, so nothing already computed is redone)
+        (the four prompts against the rectified photographs on a 48-photograph subset;
+        run_type exp2_rectified_base)
     python worker_vllm.py --model Llama-4-Maverick-17B-128E-Instruct-FP8 --tensor-parallel-size 4 \
         --exp2-source rectified --exp2-prompts v1_point_hint,v3_detailed_ecology --batch-size 24
         (the full 1,155-photograph grid restricted to a subset of the prompts, which is how a grid
@@ -41,9 +38,8 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 
-# Root of the local-inference project, which supplies the `experiment1` package
-# imported below. Override with MLLM_LOCAL_ROOT if it lives elsewhere.
-sys.path.insert(0, os.environ.get("MLLM_LOCAL_ROOT", os.path.expanduser("~/MLLMs-Local")))
+# Directory that contains the `experiment1` package (the code in ../A100-Transformers/).
+sys.path.insert(0, os.environ.get("PROJECT_ROOT", os.getcwd()))
 
 from experiment1 import common, config  # noqa: E402
 from experiment1.run_worker import load_image_pairs, select_determinism_subsample, make_row  # noqa: E402
@@ -54,21 +50,16 @@ parser.add_argument("--tensor-parallel-size", type=int, default=4)
 parser.add_argument("--max-model-len", type=int, default=8192)
 parser.add_argument("--gpu-memory-utilization", type=float, default=0.85)
 parser.add_argument("--stop-after-determinism", action="store_true")
-parser.add_argument("--validation-subsample-v2", action="store_true")
 parser.add_argument("--full-grid-fixed", action="store_true")
 parser.add_argument("--batch-size", type=int, default=1,
                      help="requests submitted per llm.chat() call for full_grid_fixed only -- "
-                          "determinism/validation always use 1 for the cleanest reproducibility "
-                          "signal, independent of this flag")
+                          "the determinism check always uses 1")
 parser.add_argument("--limit-images", type=int, default=None)
 parser.add_argument("--exp2-source", choices=["masked_gray", "rectified", "original"], default=None,
                      help="run the base prompts (config.PROMPT_IDS) against this image variant "
                           "instead of the stages above. run_type is exp2_{source}_base, the same "
                           "naming the transformers path uses for these variants, so the rows are "
-                          "directly comparable. 'original' is the uncorrected photographs on this "
-                          "engine, which is the comparison point the other variants need: for "
-                          "Scout, full_grid_fixed holds transformers rows on A100 and so is not a "
-                          "same-pipeline baseline for them")
+                          "directly comparable. 'original' is the unmodified photographs")
 parser.add_argument("--exp2-limit-images", type=int, default=None,
                      help="cap the number of images used for --exp2-source, for a bounded "
                           "verification run instead of the full 1,155-image grid")
@@ -85,14 +76,6 @@ parser.add_argument("--exp2-prompts", type=str, default=None,
                           "uneven, v3 and v4 running roughly 2 to 7 times slower per photograph "
                           "than v1 and v2 even at batch_size=24, so the split should balance "
                           "measured cost across jobs rather than the number of prompts")
-parser.add_argument("--ablation-arms", type=str, default=None,
-                     help="comma-separated arm names, or 'all': one-factor-at-a-time sensitivity "
-                          "checks on the 100-photograph determinism subsample, "
-                          "run_type=ablation_<arm>. Run here rather than on the transformers path "
-                          "so that each arm is measured on the engine that served these two "
-                          "models. The arms that cap the pixels a transformers image_processor "
-                          "keeps have no counterpart here, since vLLM receives a PIL image "
-                          "object, and they apply to the Qwen2-VL family in any case.")
 args = parser.parse_args()
 
 if args.model not in config.MODELS:
@@ -117,46 +100,6 @@ EXP2_SOURCE_DIRS = {
     "rectified": os.path.join(config.PROJECT_ROOT, "data/pics/rectified"),
     "original": config.IMAGES_DIR,
 }
-
-# The sensitivity arms that have a vLLM equivalent. Arms that cap the pixels a transformers
-# image_processor keeps (common.apply_image_max_pixels) have none: vLLM is handed a PIL image object
-# instead (see VLLMWorker._build_conversation), and that cap belongs to the Qwen2-VL family, which
-# neither model here is part of.
-ABLATION_ARMS = {
-    "baseline": ("the settings in config.py, control", {}),
-    "image_first": ("content order image before text",
-                     {"MESSAGE_ORDER": "image_first"}),
-    "tokens_200": ("MAX_NEW_TOKENS lowered to 200", {"MAX_NEW_TOKENS": 200}),
-    "no_newline": ("trailing newline stripped from all 4 prompts", {"_STRIP_PROMPT_NEWLINE": True}),
-}
-
-_ABLATION_ORIGINAL_PROMPTS = dict(config.PROMPTS)
-_ABLATION_ORIGINAL = {k: getattr(config, k) for k in ("MESSAGE_ORDER", "MAX_NEW_TOKENS")}
-
-
-def apply_ablation_arm(arm_name):
-    """Sets config to this arm and returns a dict describing what changed, for the log.
-
-    Every arm starts from the unmodified settings, so arms cannot accumulate on each other.
-    VLLMWorker._build_conversation reads config.PROMPTS and config.MESSAGE_ORDER, and _generate
-    reads config.MAX_NEW_TOKENS, at call time rather than at construction time, so setting them
-    here takes effect on the next run_phase() call."""
-    _, overrides = ABLATION_ARMS[arm_name]
-    config.PROMPTS.update(_ABLATION_ORIGINAL_PROMPTS)
-    for k, v in _ABLATION_ORIGINAL.items():
-        setattr(config, k, v)
-
-    applied = {}
-    for key, value in overrides.items():
-        if key == "_STRIP_PROMPT_NEWLINE":
-            for pid in config.PROMPTS:
-                config.PROMPTS[pid] = config.PROMPTS[pid].rstrip("\n")
-            applied["prompts"] = "trailing newline stripped"
-        else:
-            setattr(config, key, value)
-            applied[key] = value
-    return applied
-
 
 def exp2_preprocess_from_source(image_dir, filename, tag):
     """Preprocess one photograph from a named image variant, into a cache keyed on the variant.
@@ -375,11 +318,7 @@ def main():
         print(f"[{args.model}] --stop-after-determinism set, stopping here", flush=True)
         return
 
-    if args.validation_subsample_v2:
-        worker.run_phase(
-            "validation_subsample_v2", worker.determinism_pairs, config.PROMPT_IDS, batch_size=1
-        )
-    elif args.full_grid_fixed:
+    if args.full_grid_fixed:
         worker.run_phase(
             "full_grid_fixed", worker.all_pairs, config.PROMPT_IDS, batch_size=args.batch_size
         )
@@ -411,24 +350,6 @@ def main():
                 worker.run_phase(run_type, pairs, _exp2_prompt_ids, batch_size=args.batch_size)
             finally:
                 common.preprocess_image = original_preprocess_image
-    elif args.ablation_arms:
-        arms = list(ABLATION_ARMS) if args.ablation_arms == "all" else \
-            [a.strip() for a in args.ablation_arms.split(",")]
-        unknown = [a for a in arms if a not in ABLATION_ARMS]
-        if unknown:
-            print(f"Unknown ablation arm(s): {unknown}. Known: {list(ABLATION_ARMS)}", file=sys.stderr)
-            sys.exit(2)
-        n_per_arm = len(worker.determinism_pairs) * len(config.PROMPT_IDS)
-        print(f"[{args.model}] ablation: {len(arms)} arms x {n_per_arm} inferences "
-              f"= {len(arms) * n_per_arm} total, batch_size={args.batch_size}", flush=True)
-        for arm in arms:
-            applied = apply_ablation_arm(arm)
-            run_type = f"ablation_{arm}"
-            print(f"[{args.model}] === {run_type}: {ABLATION_ARMS[arm][0]} "
-                  f"(overrides: {applied or 'none (control)'}) ===", flush=True)
-            worker.run_phase(run_type, worker.determinism_pairs, config.PROMPT_IDS,
-                              batch_size=args.batch_size)
-
     print(f"[{args.model}] worker finished this invocation.", flush=True)
 
 
